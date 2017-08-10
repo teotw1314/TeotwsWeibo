@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="@dimen/dp_padding_screen">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_weibo_imgv_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/dp_padding_screen" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/item_weibo_imgv_avatar">
+
+        <TextView
+            android:id="@+id/item_weibo_tv_name"
+            style="@style/lib_common_text_timeline_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="teotws" />
+
+        <TextView
+            android:id="@+id/item_weibo_tv_time"
+            style="@style/lib_common_text_timeline_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_weibo_tv_name"
+            android:maxLines="1"
+            android:text="1s befaule" />
+
+        <TextView
+            android:id="@+id/item_weibo_tv_from"
+            style="@style/lib_common_text_timeline_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/item_weibo_tv_time"
+            android:layout_toRightOf="@+id/item_weibo_tv_time"
+            android:maxLines="1"
+            android:text="from sina" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

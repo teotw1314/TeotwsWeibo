@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="config_base_toolbar_height">46dp</dimen>
+    <integer name="config_slide_time">250</integer>
+    <integer name="config_slide_time2">250</integer>
+
+    <dimen name="text_size_item_title">16sp</dimen>
+    <dimen name="text_size_toolbar_title">18sp</dimen>
+
+    <!--dp-->
+    <dimen name="dp_padding_screen">12dp</dimen>
+    <dimen name="dp_padding_text">10dp</dimen>
+
+    <!--weibo-->
+    <dimen name="text_size_timeline_name">16sp</dimen>
+    <dimen name="text_size_timeline_time">10sp</dimen>
+    <dimen name="text_size_timeline_from">10sp</dimen>
+
+
+</resources>

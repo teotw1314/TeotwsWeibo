@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#39a6b7</color>
+    <color name="colorPrimaryDark">#39a6b7</color>
+    <color name="colorAccent">#5ea7d5</color>
+    <color name="colorStatusBarGrey">#ff999999</color>
+
+    <!--divider-->
+    <color name="divider_color_1">#efefef</color>
+
+    <!--text color-->
+    <color name="text_color_item_title">#212121</color>
+    <color name="text_color_toolbar_title">#212121</color>
+
+    <!--weibo-->
+    <color name="text_color_timeline_name">#000000</color>
+    <color name="text_color_timeline_time">#949393</color>
+    <color name="text_color_timeline_from">#949393</color>
+    <color name="text_color_timeline_content_text">#313131</color>
+    <color name="text_color_timeline_content_span">#009ad6</color>
+</resources>

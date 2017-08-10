@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TeotwsWeibo</string>
+
+    <string name="lib_home_text_open_drawer">open</string>
+    <string name="lib_home_text_close_drawer">close</string>
+</resources>

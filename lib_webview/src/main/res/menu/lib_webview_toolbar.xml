@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_copy_url"
+        android:title="@string/lib_webview_text_copy_url"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_open_with_browser"
+        android:title="@string/lib_webview_text_open_with_browser"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/lib_webview_text_share"
+        app:showAsAction="never" />
+
+</menu>

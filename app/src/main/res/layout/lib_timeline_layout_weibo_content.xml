@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp_padding_screen"
+    android:paddingRight="@dimen/dp_padding_screen">
+
+    <TextView
+        android:id="@+id/item_weibo_tv_content"
+        style="@style/lib_common_text_timeline_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="content" />
+
+    <!--<ViewStub-->
+    <!--android:layout=""-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"/>-->
+
+</LinearLayout>
