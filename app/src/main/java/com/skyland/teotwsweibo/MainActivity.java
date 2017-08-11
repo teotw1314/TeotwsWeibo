@@ -14,16 +14,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AccountManagerActivity.startActivity(this);
-//        entry();
+//        AccountManagerActivity.startActivity(this);
+        entry();
     }
 
     private void entry() {
         if (AccountUtils.getDefault().getCurrentAccount(this) == null) {
-            // TODO: 2017/8/10 account
             AccountManagerActivity.startActivity(this);
         } else {
-            // TODO: 2017/8/10 home
             HomeActivity.startActivity(this, null);
         }
     }

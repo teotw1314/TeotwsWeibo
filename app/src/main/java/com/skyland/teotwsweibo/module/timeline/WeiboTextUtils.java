@@ -11,6 +11,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -76,11 +77,27 @@ public class WeiboTextUtils {
 
 
         for (URLSpan span : spans) {
+
             final int start = spannableString_temp.getSpanStart(span);
-            final int end = spannableString_temp.getSpanEnd(span);
+            int end = spannableString_temp.getSpanEnd(span);
+
+            if(isUrl(spannableString_temp.toString().substring(start,end))){
+                spannableString = spannableString.replace(start, end, "[网页链接]");
+
+                end = end - spannableString_temp.length() - spannableString.length();
+
+            }
+
+
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(setSpanColor);
-            spannableString.setSpan(new WeiboClickSpan(setContent.substring(start, end)), start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+
+
+
+            spannableString.setSpan(new WeiboClickSpan(spannableString.toString().substring(start, end)), start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             spannableString.setSpan(colorSpan, start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+
             setTextView.setMovementMethod(LinkMovementMethod.getInstance());
         }
 

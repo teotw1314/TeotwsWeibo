@@ -96,6 +96,7 @@ public class AccountPresenter implements AccountContract.Presenter {
     public void onClickAccountItem(AccountInfo accountInfo) {
         AccountUtils.getDefault().setCurrentAccount(context, accountInfo);
         HomeActivity.startActivity(context, accountInfo.uid);
+        accountView.finishView();
     }
 
 

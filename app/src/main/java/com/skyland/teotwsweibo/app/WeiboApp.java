@@ -1,4 +1,4 @@
-package com.skyland.teotwsweibo;
+package com.skyland.teotwsweibo.app;
 
 import com.skyland.mylibrary.BaseApplication;
 

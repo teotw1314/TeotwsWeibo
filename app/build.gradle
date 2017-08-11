@@ -20,18 +20,20 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.0'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.0'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
     //dagger2
-//    compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
-//    annotationProcessor "com.google.dagger:$rootProject.ext.daggerVersion"
+    compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     //recycler view
     compile "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.ext.recyclerViewAdapterHelperVersion"
     //circle imageView
@@ -44,7 +46,7 @@ dependencies {
     //EventBus
     compile "org.greenrobot:eventbus:$rootProject.ext.eventbusVersion"
     //guava
-    compile "com.google.guava:guava:$rootProject.ext.guavaVersion"
+//    compile "com.google.guava:guava:$rootProject.ext.guavaVersion"
 
     compile project(':lib_base')
     compile project(':lib_data')

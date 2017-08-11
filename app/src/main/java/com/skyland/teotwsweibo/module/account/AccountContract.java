@@ -22,10 +22,13 @@ public interface AccountContract {
         void showProgress();
 
         void hideProgress();
+
+        void finishView();
     }
 
 
     interface Presenter extends BasePresenter{
+
         void startOauthActivity(Activity setActivity);
 
         void getAccessToken(String setCode);
@@ -36,7 +39,5 @@ public interface AccountContract {
 
         void onClickAccountItem(AccountInfo accountInfo);
     }
-
-
 
 }

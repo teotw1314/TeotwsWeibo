@@ -7,15 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 
-import com.skyland.sky_data.base.NetworkListener;
 import com.skyland.sky_data.bean.StatusInfo;
-import com.skyland.sky_data.network.SkyNetwork;
-import com.skyland.sky_data.result.StatusResult;
 import com.skyland.teotwsweibo.R;
-import com.skyland.teotwsweibo.WeiboApp;
 import com.skyland.teotwsweibo.base.LazyFragment;
-import com.skyland.teotwsweibo.module.account.AccountInfo;
-import com.skyland.teotwsweibo.utils.AccountUtils;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,9 +23,11 @@ import java.util.List;
  * Created by skyland on 2017/7/20
  */
 
-public class TimelineFragment extends LazyFragment {
+public class TimelineFragment extends LazyFragment implements TimelineContract.View{
 
     private static final String TAG = "timeline";
+
+    private TimelineContract.Presenter presenter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -59,34 +55,16 @@ public class TimelineFragment extends LazyFragment {
 
     @Override
     protected void initLogic() {
-        refreshTimeline();
+        presenter = new TimelinePresenter(getContext(), this);
+        presenter.start();
+        presenter.getTimelineList();
     }
 
-    private void refreshTimeline() {
-        AccountInfo accountInfo = AccountUtils.getDefault().getCurrentAccount(WeiboApp.getInstance());
-
-        SkyNetwork.getDefault().getTimeline(accountInfo.refresh_token, "0", "0", 20, 1, new NetworkListener<StatusResult>() {
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onSuccess(StatusResult statusResult) {
-                refreshTimelineSuccess(statusResult.statuses);
-            }
-        });
+    @Override
+    public void setPresenter(TimelineContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
-    private void refreshTimelineSuccess(List<StatusInfo> statusInfos) {
-        Log.e(TAG, "refreshTimelineSuccess: " + statusInfos.size());
-        for (int i = 0; i < statusInfos.size(); i++) {
-            Log.e(TAG, "refreshTimelineSuccess: " + statusInfos.get(i).text);
-        }
-        statusInfoList.clear();
-        statusInfoList.addAll(statusInfos);
-        timelineAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public void onStart() {
@@ -107,6 +85,18 @@ public class TimelineFragment extends LazyFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickSpan(WeiboSpanClickEvent event) {
         Log.e(TAG, "onClickSpan: " + event.spanType.toString() + " __ " + event.text);
+        presenter.onClickSpan(event.spanType, event.text);
     }
 
+
+    @Override
+    public void notifyTimelineList(List<StatusInfo> statusInfos) {
+        Log.e(TAG, "refreshTimelineSuccess: " + statusInfos.size());
+        for (int i = 0; i < statusInfos.size(); i++) {
+            Log.e(TAG, "refreshTimelineSuccess: " + statusInfos.get(i).text);
+        }
+        statusInfoList.clear();
+        statusInfoList.addAll(statusInfos);
+        timelineAdapter.notifyDataSetChanged();
+    }
 }

@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.skyland.sky_data.bean.StatusInfo;
 import com.skyland.teotwsweibo.R;
-import com.skyland.teotwsweibo.WeiboApp;
+import com.skyland.teotwsweibo.app.WeiboApp;
 import com.skyland.teotwsweibo.utils.AppUtils;
 
 import java.util.List;

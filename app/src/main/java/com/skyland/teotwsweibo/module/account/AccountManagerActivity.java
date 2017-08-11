@@ -60,7 +60,7 @@ public class AccountManagerActivity extends BaseSubActivity implements AccountCo
 
     @Override
     protected void initView() {
-        recyclerView = findViewById(R.id.recycler_account_manager);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_account_manager);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         adapter = new AccountListAdapter(accountList);
         recyclerView.setLayoutManager(layoutManager);
@@ -73,7 +73,7 @@ public class AccountManagerActivity extends BaseSubActivity implements AccountCo
             }
         });
 
-        btnAddAccount = findViewById(R.id.btn_add_account);
+        btnAddAccount = (Button) findViewById(R.id.btn_add_account);
         btnAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +122,11 @@ public class AccountManagerActivity extends BaseSubActivity implements AccountCo
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void finishView() {
+        finish();
     }
 
     @Override
