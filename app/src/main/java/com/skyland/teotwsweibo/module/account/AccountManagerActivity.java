@@ -10,28 +10,23 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.skyland.lib_webview.activity.WebViewSubActivity;
-import com.skyland.lib_webview.core.WebViewBaseActivity;
-import com.skyland.sky_data.base.NetworkListener;
-import com.skyland.sky_data.bean.AccessTokenInfo;
-import com.skyland.sky_data.bean.UserInfo;
-import com.skyland.sky_data.network.SkyNetwork;
 import com.skyland.teotwsweibo.R;
 import com.skyland.teotwsweibo.base.BaseSubActivity;
-import com.skyland.teotwsweibo.module.home.HomeActivity;
 import com.skyland.teotwsweibo.utils.AccountUtils;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by skyland on 2017/7/12
  */
 
-public class AccountManagerActivity extends BaseSubActivity {
+public class AccountManagerActivity extends BaseSubActivity implements AccountContract.View{
     private static final String TAG = "Account";
+
+    private AccountContract.Presenter presenter;
 
     private RecyclerView recyclerView;
     private Button btnAddAccount;
@@ -41,8 +36,6 @@ public class AccountManagerActivity extends BaseSubActivity {
     private LinearLayoutManager layoutManager;
 
     private List<AccountInfo> accountList = new ArrayList<>();
-    private String accessToken;
-    private String uid;
 
     public static void startActivity(Context setContext) {
         Intent intent = new Intent(setContext, AccountManagerActivity.class);
@@ -52,7 +45,6 @@ public class AccountManagerActivity extends BaseSubActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -68,7 +60,7 @@ public class AccountManagerActivity extends BaseSubActivity {
 
     @Override
     protected void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_account_manager);
+        recyclerView = findViewById(R.id.recycler_account_manager);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         adapter = new AccountListAdapter(accountList);
         recyclerView.setLayoutManager(layoutManager);
@@ -77,107 +69,45 @@ public class AccountManagerActivity extends BaseSubActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                onClickAccountItem(accountList.get(position));
+                presenter.onClickAccountItem(accountList.get(position));
             }
         });
 
-        btnAddAccount = (Button) findViewById(R.id.btn_add_account);
+        btnAddAccount = findViewById(R.id.btn_add_account);
         btnAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pushOauthActivity();
+                presenter.startOauthActivity(AccountManagerActivity.this);
             }
         });
     }
 
     @Override
     protected void initLogic() {
-        refreshAccountList();
+        presenter = new AccountPresenter(this, this);
+        presenter.start();
     }
 
-    private void refreshAccountList() {
+    @Override
+    public void setPresenter(AccountContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showToast(String setMessage) {
+        Toast.makeText(this, setMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void refreshAccounts() {
         accountList.clear();
         accountList.addAll(AccountUtils.getDefault().getAccountList(this));
         Log.e(TAG, "refreshAccountList: " + accountList.size() );
         adapter.notifyDataSetChanged();
     }
 
-    private void onClickAccountItem(AccountInfo accountInfo) {
-        AccountUtils.getDefault().setCurrentAccount(this, accountInfo);
-        HomeActivity.startActivity(this, accountInfo.uid);
-    }
-
-    /**
-     *
-     */
-    private void pushOauthActivity() {
-        String oauthUrl = "https://api.weibo.com/oauth2/authorize"
-                + "?client_id=" + SkyNetwork.getDefault().getAppKey()
-                + "&redirect_uri=" + SkyNetwork.getDefault().getCallbackUrl()
-                + "&response_type=code"
-                + "&display=mobile/";
-        WebViewSubActivity.startActivity(this, null, oauthUrl, true);
-    }
-
-    /**
-     * 获取access token
-     *
-     * @param setCode
-     */
-    private void getAccessToken(String setCode) {
-        showDialog();
-        SkyNetwork.getDefault().getAccessToken(setCode, new NetworkListener<AccessTokenInfo>() {
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onSuccess(AccessTokenInfo accessTokenInfo) {
-                Log.e(TAG, "onSuccess: " + accessTokenInfo.uid);
-                accessToken = accessTokenInfo.access_token;
-                uid = accessTokenInfo.uid;
-                getUserInfo(accessTokenInfo.access_token, accessTokenInfo.uid);
-            }
-        });
-    }
-
-    /**
-     * 获取用户信息
-     *
-     * @param setAccessToken
-     * @param setUid
-     */
-    private void getUserInfo(String setAccessToken, String setUid) {
-        SkyNetwork.getDefault().getUserInfo(setAccessToken, setUid, new NetworkListener<UserInfo>() {
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onSuccess(UserInfo userInfo) {
-                getUserInfoSuccess(userInfo);
-            }
-        });
-    }
-
-    private void getUserInfoSuccess(UserInfo userInfo) {
-        Log.e(TAG, "getUserInfoSuccess: " + userInfo.name);
-        AccountInfo accountInfo = new AccountInfo();
-        accountInfo.refresh_token = this.accessToken;
-        accountInfo.uid = this.uid;
-        accountInfo.name = userInfo.name;
-        accountInfo.header_url = userInfo.avatar_hd;
-        AccountUtils.getDefault().setAccount(this, accountInfo);
-        refreshAccountList();
-        hideProgress();
-    }
-
-    /**
-     * 显示loading动画
-     */
-    private void showDialog() {
+    @Override
+    public void showProgress() {
         if(progressDialog == null){
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("正在获取用户信息.......");
@@ -187,25 +117,18 @@ public class AccountManagerActivity extends BaseSubActivity {
         progressDialog.show();
     }
 
-    /**
-     * 隐藏loading动画
-     */
-    private void hideProgress() {
+    @Override
+    public void hideProgress() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == WebViewBaseActivity.REQUEST_CODE) {
-                String code = data.getStringExtra(WebViewBaseActivity.RESULT_CODE_KEY);
-                Log.e(TAG, "onActivityResult: code:" + code);
-                getAccessToken(code);
-            }
+            presenter.onResult(requestCode, data);
         }
     }
 }

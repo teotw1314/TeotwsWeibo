@@ -46,7 +46,7 @@ public class AccountUtils {
         return new ArrayList<AccountInfo>();
     }
 
-    public void setAccount(Context setContext, AccountInfo setAccountInfo) {
+    public void addAccount(Context setContext, AccountInfo setAccountInfo) {
         Log.e(TAG, "setAccount: " + setAccountInfo.uid + "__" + setAccountInfo.name );
         if (setAccountInfo == null || TextUtils.isEmpty(setAccountInfo.uid)) {
             return;
